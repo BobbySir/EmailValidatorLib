@@ -1,6 +1,14 @@
 plugins {
     id 'com.android.library'
 }
+//apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'kotlin-android'
+//group='com.github.BobbySir'
+//apply plugin: 'kotlin-kapt'
+//kapt {
+//    generateStubs = true
+//}
+
 
 android {
     compileSdk 32
@@ -11,11 +19,13 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,4 +44,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+}
+repositories {
+    mavenCentral()
 }
