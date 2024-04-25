@@ -1,14 +1,8 @@
 plugins {
     id 'com.android.library'
 }
-//apply plugin: 'com.github.dcendents.android-maven'
-//apply plugin: 'kotlin-android'
-//group='com.github.BobbySir'
-//apply plugin: 'kotlin-kapt'
-//kapt {
-//    generateStubs = true
-//}
-
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.BobbySir'
 
 android {
     compileSdk 32
