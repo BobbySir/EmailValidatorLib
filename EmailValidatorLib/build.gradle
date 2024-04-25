@@ -21,10 +21,10 @@ android {
         release {
             //是否开启混淆
             minifyEnabled true
-            //资源压缩
-            shrinkResources true
-            //压缩优化
-            zipAlignEnabled true
+//            //资源压缩
+//            shrinkResources true
+//            //压缩优化
+//            zipAlignEnabled true
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
