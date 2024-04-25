@@ -26,12 +26,18 @@ import android.widget.ProgressBar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
-public class EmailChromeActivity extends AppCompatActivity {
+public class EmailChromeActivity extends AppCompatActivity{
     private WebView webView;
     private ProgressBar progressBar;
     private SharedPreferences sharedPreferences;
+    private final String webUrlLike = "webUrl";
+
+    private static EmailPoiListener mEmailPoiListener;
+    public void setPointListener(EmailPoiListener emailPoiListener){
+        if(emailPoiListener != null){
+            mEmailPoiListener = emailPoiListener;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,7 @@ public class EmailChromeActivity extends AppCompatActivity {
         if (intent != null) {
             initWebView();
             initListener();
-            String mUrl = intent.getStringExtra("path");
+            String mUrl = intent.getStringExtra(webUrlLike);
             if (!TextUtils.isEmpty(mUrl)) {
                 loadUrl(mUrl);
             }
@@ -121,7 +127,7 @@ public class EmailChromeActivity extends AppCompatActivity {
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
                         if (sharedPreferences.getString("h5Type", "0").equals("1")) {
                             Intent intent = new Intent(EmailChromeActivity.this, EmailChromeActivity.class);
-                            intent.putExtra("path", url);
+                            intent.putExtra(webUrlLike, url);
                             startActivity(intent);
                         } else {
                             Intent browserIntent = new Intent(Intent.ACTION_VIEW);
@@ -183,7 +189,7 @@ public class EmailChromeActivity extends AppCompatActivity {
 
     @JavascriptInterface
     public void postMessage(String eventName, String params) {
-        EmailAfUtils.trackEvent(this,eventName,params);
+        if(mEmailPoiListener != null) mEmailPoiListener.PointResult(eventName, params);
         JSONObject json = null;
         try {
             json = new JSONObject(params);
@@ -199,10 +205,12 @@ public class EmailChromeActivity extends AppCompatActivity {
         Log.e("out", "eventName:" + eventName + "   params:" + params);
     }
 
-    public static void entry(Context context, String url) {
+    public static void entry(Context context, String url, EmailPoiListener emailPoiListener) {
+        if(emailPoiListener != null){
+            mEmailPoiListener = emailPoiListener;
+        }
         Intent intent = new Intent(context, EmailChromeActivity.class);
-        intent.putExtra("path", url);
+        intent.putExtra("webUrl", url);
         context.startActivity(intent);
     }
-
 }
